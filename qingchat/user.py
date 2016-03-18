@@ -1,14 +1,16 @@
- #!/usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 import requests
+import json
 from qingchat.cli import address
-
-base = address + 'openwx/get_user_info'
 
 
 def get_user_info():
-    print(requests.get(base).text)
+    url = address + 'openwx/get_user_info'
+    r = requests.get(url)
+    # print(r.json())
+    return r.json()
 
 
 if __name__ == '__main__':

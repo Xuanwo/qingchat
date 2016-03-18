@@ -1,4 +1,4 @@
- #!/usr/bin/python3
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
@@ -23,7 +23,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     entry_points=entry_points,
-    requires=['requests'],
+    requires=['requests', 'flask'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
