@@ -43,6 +43,7 @@ Send message to specify group or your list.
 `content` can be text or url of an image.
 
 ## Todo
+- [ ] Provide a auto setup for environment
 - [ ] Group
 - [ ] Friend
 - [ ] User
