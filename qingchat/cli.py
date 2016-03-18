@@ -5,7 +5,7 @@
 Qingchat CLI
 
 Usage:
-
+    
 """
 
 import requests
