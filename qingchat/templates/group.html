@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    {% for i in chosen_group %}
+    <li>{{ i }}</li>
+    {% endfor %}
+{% endblock %}
+{% block footer %}
+    &copy; Copyright 2008 by <a href="http://domain.invalid/">you</a>.
+{% endblock %}

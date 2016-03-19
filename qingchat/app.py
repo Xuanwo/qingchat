@@ -3,25 +3,22 @@
 
 from flask import Flask
 from flask import render_template
-from qingchat import friend
-from qingchat import user
+from qingchat import cli
 import json
 
 app = Flask(__name__)
-address = 'http://127.0.0.1:3000/'
 
 
 @app.route('/')
 def hello_world():
-    r = user.get_user_info()
+    r = cli.group_list()
     return r['name']
 
 
-@app.route('/user')
-def show_user_info():
-    r = user.get_user_info()
-    return r
+@app.route('group')
+def test():
+    pass
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
