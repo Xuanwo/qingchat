@@ -30,7 +30,7 @@ def init():
     if not os.path.exists(home):  # create dir for config file
         os.makedirs(home)
     if not os.path.isfile(home + '/config.yml'):  # create config file from templates
-        shutil.copyfile('config.yml', home + '/config.yml')
+        shutil.copyfile('config.yml', home + '/config.yml')  # refactor this palce, use yaml
 
 
 def group_list():
@@ -59,14 +59,14 @@ def group_choose(group_id):
 
 def group_send_text(content):
     data = {
-        'id': '',
-        # 'displayname': '',
+        # 'id': '',
+        'displayname': '',  # I can use displayname directly
         # 'media_path': '',
         'content': ''
     }
     url = address + 'send_group_message'
     for i in config['chosen_group']:
-        data['id'] = i
+        data['displayname'] = 'Qingchat_test_1'
         data['content'] = content
         r = requests.post(url, data=data)
         print(r.json())
