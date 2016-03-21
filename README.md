@@ -1,5 +1,8 @@
 # Qingchat
 
+This package is still under development, **do not** use it in production evrironment.
+[中文文档参见此处]()
+
 ## Install
 
 ### Pip
@@ -26,26 +29,27 @@ Under development
 qingchat group list
 ```
 
-Show all your groups.
+Show all your groups by name.
 
 ```
-qingchat group choose [group id]
+qingchat group choose <group_name>
 ```
 
 Show all groups that you had chosen.
 if `group id` is given, add this group into your list.
 
 ```
-qingchat group send [group id|list] [content]
+qingchat group send -t <content>
+qingchat group send -i <media>
 ```
 
-Send message to specify group or your list.
-`content` can be text or url of an image.
+Send message to your list.
+`content` can be text and `media` can be any media in your computer or url.
 
 ## Todo
-- [ ] Provide a auto setup for environment.
+- [x] Provide a auto setup for environment.
 - [ ] Auto show qrcode for login.
-- [ ] Finish work of cli.
-- [ ] Group
+- [x] Finish work of cli.
+- [x] Group
 - [ ] Friend
 - [ ] User
