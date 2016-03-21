@@ -36,7 +36,9 @@ qingchat group choose <group_name>
 ```
 
 Show all groups that you had chosen.
-if `group id` is given, add this group into your list.
+if `group_name` is given, add this group into your list.
+
+> `group_name` support regex and you can use `test*` to choose `test1`, `test2` and so on.
 
 ```
 qingchat group send -t <content>
@@ -45,11 +47,3 @@ qingchat group send -i <media>
 
 Send message to your list.
 `content` can be text and `media` can be any media in your computer or url.
-
-## Todo
-- [x] Provide a auto setup for environment.
-- [ ] Auto show qrcode for login.
-- [x] Finish work of cli.
-- [x] Group
-- [ ] Friend
-- [ ] User

@@ -28,6 +28,8 @@ qingchat group choose <group_name>...
 
 将指定群组加入你的列表，并显示你列表中已经拥有的群组。
 
+> <group_name>参数支持正则，你可以使用`test*` 来选择 `test1`, `test2` 及其他
+
 ```
 qingchat group send -t <content>
 qingchat group send -i <media>

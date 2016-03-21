@@ -4,6 +4,8 @@
 """Qingchat CLI
 
 Usage:
+  qingchat config ip <ip>
+  qingchat config port <port>
   qingchat group list
   qingchat group choose <group_name>...
   qingchat group send -t <content>
@@ -35,16 +37,16 @@ def init():
         os.makedirs(home)
     if not os.path.isfile(home + '/config.yml'):  # create config file if noy exist
         os.mknod(home + '/config.yml')
-        initconfig['address'] = "127.0.0.1"
+        initconfig['ip'] = "127.0.0.1"
         initconfig['port'] = 3000
-        write_config(initconfig)
+        save_config(initconfig)
     else:
         initconfig = load_config()
 
     return initconfig
 
 
-def write_config(content):
+def save_config(content):
     """
 
     :param content: content of config
@@ -66,6 +68,20 @@ def load_config():
     return content
 
 
+def config_ip(ip):
+    tmpconfig = load_config()
+    tmpconfig['ip'] = ip
+    print("您的服务器端IP地址被设置为： %s" % ip)
+    save_config(tmpconfig)
+
+
+def config_port(port):
+    tmpconfig = load_config()
+    tmpconfig['port'] = port
+    print("您的服务器端端口被设置为： %s" % port)
+    save_config(tmpconfig)
+
+
 def group_list():
     """
 
@@ -79,7 +95,7 @@ def group_list():
     for i in content:
         config['group'].append(i['displayname'])
         print("群名称： " + i['displayname'])
-    write_config(config)
+    save_config(config)
     return config['group']
 
 
@@ -98,7 +114,7 @@ def group_choose(group_name):
             if re.match(i, j) and j not in config['chosen_group']:
                 config['chosen_group'].append(j)
 
-    write_config(config)
+    save_config(config)
     print("您已经选择的群组：")
     for i in config['chosen_group']:
         print("群名称： " + i)
@@ -149,7 +165,7 @@ def group_clean():
     """
     if 'chosen_group' in config:
         del config['chosen_group']
-        write_config(config)
+        save_config(config)
         print("您选中的群组均已被删除。")
 
 
@@ -158,19 +174,24 @@ def main():
 
     :return:
     """
-    arguments = docopt(__doc__, version='Qingchat 0.0.2')
+    arguments = docopt(__doc__, version='Qingchat 0.0.3')
     global config, address
     config = init()
-    address = 'http://%s:%d/openwx/' % (config['address'], config['port'])
+    address = 'http://%s:%d/openwx/' % (config['ip'], config['port'])
 
-    if arguments['group']:  # group command
-        if arguments['list']:
+    if arguments['config']:
+        if arguments['ip']:
+            config_ip(arguments['<ip>'])
+        elif arguments['port']:
+            config_port(arguments['<port>'])
+    elif arguments['group']:  # group command
+        if arguments['list']:  # group list
             group_list()
-        elif arguments['choose']:
+        elif arguments['choose']:  # group choose
             group_choose(arguments['<group_name>'])
-        elif arguments['send'] and arguments['-t']:
+        elif arguments['send'] and arguments['-t']:  # group send -t
             group_send_text(arguments['<content>'])
-        elif arguments['send'] and arguments['-i']:
+        elif arguments['send'] and arguments['-i']:  # group send -i
             group_send_image(arguments['<media>'])
         elif arguments['clean']:
             group_clean()

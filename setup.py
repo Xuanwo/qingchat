@@ -23,7 +23,12 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     entry_points=entry_points,
-    requires=['requests', 'docopt', 'pyyaml', 'flask'],
+    requires=[
+        'requests',
+        'docopt',
+        'pyyaml',
+        'flask',
+    ],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
