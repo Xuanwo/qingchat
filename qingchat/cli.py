@@ -174,7 +174,7 @@ def main():
 
     :return:
     """
-    arguments = docopt(__doc__, version='Qingchat 0.0.3')
+    arguments = docopt(__doc__, version='Qingchat 0.1.0')
     global config, address
     config = init()
     address = 'http://%s:%d/openwx/' % (config['ip'], config['port'])

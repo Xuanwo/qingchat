@@ -1,3 +1,14 @@
+# 0.1.0
+
+## Features
+
+- add `config ip/port` command
+
+## Breaking Changes
+
+- `write_config` changed into `save_config`
+- `address` in config file changed into `ip`
+
 # 0.0.3
 
 ## Features
