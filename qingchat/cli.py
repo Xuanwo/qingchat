@@ -12,14 +12,13 @@ Usage:
 
 Options:
   -h --help     Show this screen.
-  --version     Show version.
+  -v --version     Show version.
 """
 
 import requests
 import yaml
 import os
 from docopt import docopt
-import json
 
 
 def init():
@@ -48,6 +47,10 @@ def group_list():
 
 
 def group_choose(group_name):
+    """
+    :param group_name: group_name to be chosen
+    :return:
+    """
     if 'chosen_group' not in config:
         config['chosen_group'] = []
     for i in group_name:
@@ -62,6 +65,11 @@ def group_choose(group_name):
 
 
 def group_send_text(content):
+    """
+
+    :param content:
+    :return:
+    """
     data = {
         'displayname': '',
         'content': ''
@@ -75,6 +83,11 @@ def group_send_text(content):
 
 
 def group_send_image(media):
+    """
+
+    :param media:
+    :return:
+    """
     data = {
         'displayname': '',
         'media_path': ''
@@ -88,6 +101,10 @@ def group_send_image(media):
 
 
 def group_clean():
+    """
+
+    :return:
+    """
     if 'chosen_group' in config:
         del config['chosen_group']
         with open(home + '/config.yml', 'w') as f:
@@ -97,6 +114,10 @@ def group_clean():
 
 
 def main():
+    """
+
+    :return:
+    """
     arguments = docopt(__doc__, version='Qingchat 0.0.1')
     init()
     global config, address
