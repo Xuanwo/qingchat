@@ -25,9 +25,11 @@ setup(
     entry_points=entry_points,
     requires=[
         'requests',
-        'docopt',
         'pyyaml',
         'flask',
+    ],
+    install_requires=[
+        'docopt',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -36,6 +38,7 @@ setup(
         'Operating System :: MacOS',
         'Operating System :: POSIX',
         'Operating System :: POSIX :: Linux',
+        'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.4',
     ],

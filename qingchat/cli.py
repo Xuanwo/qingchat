@@ -10,6 +10,7 @@ Usage:
   qingchat group choose <group_name>...
   qingchat group send -t <content>
   qingchat group send -i <media>
+  qingchat group send -f <file> [<delaytime>]
   qingchat group clean
 
 Options:
@@ -22,6 +23,7 @@ import yaml
 import os
 from docopt import docopt
 import re
+import time
 
 
 def init():
@@ -36,7 +38,9 @@ def init():
     if not os.path.exists(home):  # create dir for config file
         os.makedirs(home)
     if not os.path.isfile(home + '/config.yml'):  # create config file if noy exist
-        os.mknod(home + '/config.yml')
+        with open(home + '/config.yml', 'w') as f:
+            f.write('')
+            f.close()
         initconfig['ip'] = "127.0.0.1"
         initconfig['port'] = 3000
         save_config(initconfig)
@@ -78,7 +82,7 @@ def config_ip(ip):
 def config_port(port):
     tmpconfig = load_config()
     tmpconfig['port'] = port
-    print("您的服务器端端口被设置为： %s" % port)
+    print("您的服务器端端口被设置为： %d" % port)
     save_config(tmpconfig)
 
 
@@ -140,7 +144,7 @@ def group_send_text(content):
         print(r.json())
 
 
-def group_send_image(media):
+def group_send_media(media):
     """
 
     :param media:
@@ -156,6 +160,24 @@ def group_send_image(media):
         data['media_path'] = media
         r = requests.post(url, data=data)
         print(r.json())
+
+
+def group_send_by_file(file, delaytime=0):
+    """
+
+    :param file: the path to the file you want to use
+    :param delaytime: set the delaytime in two message in seconds, defaults to 0s
+    :return:
+    """
+    with open(file, "r") as f:
+        content = f.readlines()
+        for i in content:
+            time.sleep(float(delaytime))
+            if i[0] == '!':
+                group_send_media(i[1:])
+            else:
+                group_send_text(i)
+    print("文件发送完毕！")
 
 
 def group_clean():
@@ -189,12 +211,15 @@ def main():
             group_list()
         elif arguments['choose']:  # group choose
             group_choose(arguments['<group_name>'])
-        elif arguments['send'] and arguments['-t']:  # group send -t
-            group_send_text(arguments['<content>'])
-        elif arguments['send'] and arguments['-i']:  # group send -i
-            group_send_image(arguments['<media>'])
-        elif arguments['clean']:
-            group_clean()
+        elif arguments['send']:
+            if arguments['-t']:  # group send -t
+                group_send_text(arguments['<content>'])
+            elif arguments['-i']:  # group send -i
+                group_send_media(arguments['<media>'])
+            elif arguments['-f']:  # group send -f
+                group_send_by_file(arguments['<file>'], arguments['<delaytime>'])
+    elif arguments['clean']:
+        group_clean()
     elif arguments['user']:  # user command
         pass
 
