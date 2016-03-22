@@ -1,9 +1,16 @@
+# 0.2.1
+
+## Bug Fixes
+
+- Fix error while delaytime set as Int
+- Fix error while run `group choose` before `group list` and add info
+- Complete `install_requires`
+
 # 0.2.0
 
 ## Features
 
 - add `group send -f` command, allow user to send message from file
-
 
 ## Bug Fixes
 
@@ -11,7 +18,7 @@
 
 ## Breaking Changes
 
-- `group_send_image` changed into `group_send_mediagit `
+- `group_send_image` changed into `group_send_media`
 
 # 0.1.0
 

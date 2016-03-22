@@ -38,9 +38,7 @@ def init():
     if not os.path.exists(home):  # create dir for config file
         os.makedirs(home)
     if not os.path.isfile(home + '/config.yml'):  # create config file if noy exist
-        with open(home + '/config.yml', 'w') as f:
-            f.write('')
-            f.close()
+        open(home + '/config.yml', "w+").close()
         initconfig['ip'] = "127.0.0.1"
         initconfig['port'] = 3000
         save_config(initconfig)
@@ -110,8 +108,8 @@ def group_choose(group_name):
     """
     if 'chosen_group' not in config or not config['chosen_group']:
         config['chosen_group'] = []
-    if not config['chosen_group']:
-        config['chosen_group'] = []
+    if not config['group']:
+        print("请先获取群组信息")
 
     for i in group_name:
         for j in config['group']:

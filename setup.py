@@ -30,6 +30,8 @@ setup(
     ],
     install_requires=[
         'docopt',
+        'pyyaml',
+        'requests',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
