@@ -1,3 +1,9 @@
+# 0.3.0
+
+## Features
+
+- add `config login`, allow user scan the qrcode directly
+
 # 0.2.1
 
 ## Bug Fixes

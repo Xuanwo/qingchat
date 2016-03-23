@@ -6,12 +6,13 @@
 Usage:
   qingchat config ip <ip>
   qingchat config port <port>
+  qingchat config login
   qingchat group list
   qingchat group choose <group_name>...
+  qingchat group clean
   qingchat group send -t <content>
   qingchat group send -i <media>
   qingchat group send -f <file> [<delaytime>]
-  qingchat group clean
 
 Options:
   -h --help     Show this screen.
@@ -24,12 +25,15 @@ import os
 from docopt import docopt
 import re
 import time
+import webbrowser
 
 
 def init():
     """
+    Read config file in ~/.confgi/qingchat/config.yml
+    If not exsit, add the initconfig about ip and port
 
-    :return: the content fo config file
+    :return: the content fo config file in yaml
     """
     global home
     home = os.getenv('HOME') + '/.config/qingchat'  # need to be tested on Mac OS, and do not support Win
@@ -50,9 +54,9 @@ def init():
 
 def save_config(content):
     """
+    Save config into config file
 
-    :param content: content of config
-    :return:
+    :param content: content of config in yaml
     """
     with open(home + '/config.yml', "w") as f:
         f.write(yaml.dump(content, default_flow_style=False))
@@ -61,6 +65,7 @@ def save_config(content):
 
 def load_config():
     """
+    Load config file from config file in yaml
 
     :return: yaml of config file
     """
@@ -71,6 +76,11 @@ def load_config():
 
 
 def config_ip(ip):
+    """
+    Set your server ip as ip
+
+    :param ip: your server's ip
+    """
     tmpconfig = load_config()
     tmpconfig['ip'] = ip
     print("您的服务器端IP地址被设置为： %s" % ip)
@@ -78,14 +88,34 @@ def config_ip(ip):
 
 
 def config_port(port):
+    """
+    Set your server ip as port
+
+    :param port: your server's port
+    """
     tmpconfig = load_config()
     tmpconfig['port'] = port
     print("您的服务器端端口被设置为： %d" % port)
     save_config(tmpconfig)
 
 
+def config_login():
+    """
+    Download qrcode.jpg and show them in webbrowser
+
+    """
+    qrcode = "http://%s/qrcode.jpg" % config['ip']
+    r = requests.get(qrcode)
+    with open("qrcode.jpg", "wb") as f:
+        f.write(r.content)
+        f.close()
+    print("请扫描二维码登录微信")
+    webbrowser.open("qrcode.jpg")
+
+
 def group_list():
     """
+    Show all your group
 
     :return: the json of group info
     """
@@ -103,6 +133,8 @@ def group_list():
 
 def group_choose(group_name):
     """
+    Add group_name into chosen_group list
+
     :param group_name: group_name to be chosen, support re
     :return: list of chonsen groups
     """
@@ -126,9 +158,9 @@ def group_choose(group_name):
 
 def group_send_text(content):
     """
+    Send text message to your chosen_group list
 
-    :param content:
-    :return:
+    :param content: your text message
     """
     data = {
         'displayname': '',
@@ -144,9 +176,9 @@ def group_send_text(content):
 
 def group_send_media(media):
     """
+    Send media message to your chosen_group list
 
-    :param media:
-    :return:
+    :param media: your media in url or path
     """
     data = {
         'displayname': '',
@@ -162,10 +194,10 @@ def group_send_media(media):
 
 def group_send_by_file(file, delaytime=0):
     """
+    Send message to your chosen_group list by file
 
     :param file: the path to the file you want to use
     :param delaytime: set the delaytime in two message in seconds, defaults to 0s
-    :return:
     """
     with open(file, "r") as f:
         content = f.readlines()
@@ -180,8 +212,8 @@ def group_send_by_file(file, delaytime=0):
 
 def group_clean():
     """
+    Clean all your chosen_group list
 
-    :return:
     """
     if 'chosen_group' in config:
         del config['chosen_group']
@@ -191,19 +223,21 @@ def group_clean():
 
 def main():
     """
+    Parse the argument and load config file
 
-    :return:
     """
     arguments = docopt(__doc__, version='Qingchat 0.1.0')
     global config, address
     config = init()
     address = 'http://%s:%d/openwx/' % (config['ip'], config['port'])
 
-    if arguments['config']:
-        if arguments['ip']:
+    if arguments['config']:  # config command
+        if arguments['ip']:  # config ip
             config_ip(arguments['<ip>'])
-        elif arguments['port']:
+        elif arguments['port']:  # config port
             config_port(arguments['<port>'])
+        elif arguments['login']:  # config login
+            config_login()
     elif arguments['group']:  # group command
         if arguments['list']:  # group list
             group_list()
