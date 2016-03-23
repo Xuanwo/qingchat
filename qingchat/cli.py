@@ -106,11 +106,8 @@ def config_login():
     """
     qrcode = "http://%s/qrcode.jpg" % config['ip']
     r = requests.get(qrcode)
-    with open("qrcode.jpg", "wb") as f:
-        f.write(r.content)
-        f.close()
     print("请扫描二维码登录微信")
-    webbrowser.open("qrcode.jpg")
+    webbrowser.open(qrcode)
 
 
 def group_list():
@@ -145,7 +142,10 @@ def group_choose(group_name):
 
     for i in group_name:
         for j in config['group']:
-            if re.match(i, j) and j not in config['chosen_group']:
+            if re.match(i, j) \
+                    and re.match(i, j).group() != '' \
+                    and j not in config['chosen_group']:
+                # Sometime re.match will return empty str
                 config['chosen_group'].append(j)
 
     save_config(config)
@@ -215,9 +215,10 @@ def group_clean():
     Clean all your chosen_group list
 
     """
-    if 'chosen_group' in config:
-        del config['chosen_group']
-        save_config(config)
+    tmpconfig = load_config()
+    if 'chosen_group' in tmpconfig:
+        del tmpconfig['chosen_group']
+        save_config(tmpconfig)
         print("您选中的群组均已被删除。")
 
 
@@ -226,7 +227,7 @@ def main():
     Parse the argument and load config file
 
     """
-    arguments = docopt(__doc__, version='Qingchat 0.1.0')
+    arguments = docopt(__doc__, version='Qingchat 0.3.1')
     global config, address
     config = init()
     address = 'http://%s:%d/openwx/' % (config['ip'], config['port'])
@@ -250,8 +251,8 @@ def main():
                 group_send_media(arguments['<media>'])
             elif arguments['-f']:  # group send -f
                 group_send_by_file(arguments['<file>'], arguments['<delaytime>'])
-    elif arguments['clean']:
-        group_clean()
+        elif arguments['clean']:
+            group_clean()
     elif arguments['user']:  # user command
         pass
 

@@ -1,3 +1,10 @@
+# 0.3.1
+
+## Bug Fixes
+
+- Fix `group clean` can't use
+- Fix re.match error while choose Chinese group name
+
 # 0.3.0
 
 ## Features
