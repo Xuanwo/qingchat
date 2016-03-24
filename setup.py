@@ -27,6 +27,7 @@ setup(
         'requests',
         'pyyaml',
         'flask',
+        'docopt',
     ],
     install_requires=[
         'docopt',

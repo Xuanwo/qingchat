@@ -19,13 +19,14 @@ Options:
   -v --version     Show version.
 """
 
-import requests
-import yaml
-import os
 from docopt import docopt
+import os
 import re
+import requests
+import sys
 import time
 import webbrowser
+import yaml
 
 
 def init():
@@ -104,10 +105,17 @@ def config_login():
     Download qrcode.jpg and show them in webbrowser
 
     """
-    qrcode = "http://%s/qrcode.jpg" % config['ip']
+    qrcode = "http://%s/qrcode.jpg" % config['ip']  # get qrcode from server
     r = requests.get(qrcode)
+    with open("qrcode.jpg", "wb") as f:
+        f.write(r.content)
+        f.close()
+
     print("请扫描二维码登录微信")
-    webbrowser.open(qrcode)
+    if sys.platform.startswith('darwin'):
+        os.system("open qrcode.jpg")
+    else:
+        webbrowser.open("qrcode.jpg")
 
 
 def group_list():
@@ -227,7 +235,7 @@ def main():
     Parse the argument and load config file
 
     """
-    arguments = docopt(__doc__, version='Qingchat 0.3.1')
+    arguments = docopt(__doc__, version='Qingchat 0.3.2')
     global config, address
     config = init()
     address = 'http://%s:%d/openwx/' % (config['ip'], config['port'])

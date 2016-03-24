@@ -1,3 +1,9 @@
+# 0.3.2
+
+## Bug Fixes
+
+- Fix qrcode open error on Mac OS X
+
 # 0.3.1
 
 ## Bug Fixes
