@@ -12,7 +12,8 @@ def setup():
     os.environ['HOME'] = os.getcwd()  # set test env
     global home
     home = os.getenv('HOME') + '/.config/qingchat'
-    os.makedirs('.config/qingchat')
+    if not os.path.exists(home):
+        os.makedirs('.config/qingchat')
     initconfig = {
         'ip': '127.0.0.1',
         'port': 3000
@@ -29,57 +30,83 @@ def teardown():
         os.removedirs(home)
 
 
+@nose.with_setup(setup, teardown)
 def test_init():
     teardown()
     testconfig = {
         'ip': '127.0.0.1',
         'port': 3000
     }
-    assert cli.init()==testconfig
+    assert cli.init() == testconfig
 
+
+@nose.with_setup(setup, teardown)
 def test_save_config():
-    pass
+    testconfig = {
+        'ip': '0.0.0.0',
+        'port': 4000
+    }
+    cli.save_config(testconfig)
+    with open(home + '/config.yml', "r") as f:
+        content = yaml.load(f)
+        f.close()
+    assert testconfig == content
 
 
+@nose.with_setup(setup, teardown)
 def test_load_config():
-    pass
+    testconfig = {
+        'ip': '127.0.0.1',
+        'port': 3000
+    }
+    assert cli.load_config() == testconfig
 
 
+@nose.with_setup(setup, teardown)
 def test_config_ip():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_config_port():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_login():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_group_list():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_group_choose():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_group_send_text():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_group_send_media():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_group_send_by_file():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_group_clean():
     pass
 
 
+@nose.with_setup(setup, teardown)
 def test_main():
     pass
