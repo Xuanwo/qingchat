@@ -86,6 +86,7 @@ def config_ip(ip):
     tmpconfig['ip'] = ip
     print("您的服务器端IP地址被设置为： %s" % ip)
     save_config(tmpconfig)
+    return ip
 
 
 def config_port(port):
@@ -98,6 +99,7 @@ def config_port(port):
     tmpconfig['port'] = port
     print("您的服务器端端口被设置为： %d" % port)
     save_config(tmpconfig)
+    return port
 
 
 def config_login():

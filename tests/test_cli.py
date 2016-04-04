@@ -64,12 +64,14 @@ def test_load_config():
 
 @nose.with_setup(setup, teardown)
 def test_config_ip():
-    pass
+    configip = '0.0.0.0'
+    assert cli.config_ip(configip) == configip
 
 
 @nose.with_setup(setup, teardown)
 def test_config_port():
-    pass
+    configport = 4000
+    assert cli.config_port(configport) == configport
 
 
 @nose.with_setup(setup, teardown)
