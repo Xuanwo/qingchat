@@ -20,6 +20,7 @@ Options:
 """
 
 from docopt import docopt
+import qingchat
 import os
 import re
 import requests
@@ -37,7 +38,7 @@ def init():
     :return: the content fo config file in yaml
     """
     global home
-    home = os.getenv('HOME') + '/.config/qingchat'  # need to be tested on Mac OS, and do not support Win
+    home = os.path.expanduser('~/.config/qingchat')
     initconfig = dict()
 
     if not os.path.exists(home):  # create dir for config file
@@ -235,7 +236,7 @@ def main():
     Parse the argument and load config file
 
     """
-    arguments = docopt(__doc__, version='Qingchat 0.3.2')
+    arguments = docopt(__doc__, version='Qingchat ' + qingchat.__version__)
     global config, address
     config = init()
     address = 'http://%s:%d/openwx/' % (config['ip'], config['port'])

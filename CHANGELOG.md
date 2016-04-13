@@ -1,3 +1,9 @@
+# 0.3.3
+
+## Bug Fixes
+
+- Fix getenv error on Windows
+
 # 0.3.2
 
 ## Bug Fixes
