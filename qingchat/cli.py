@@ -22,23 +22,19 @@ Options:
 from docopt import docopt
 import group
 import os
-import re
 import requests
 import sys
-import time
 import webbrowser
 import yaml
 
-# TODO: check this on Win
 home = os.path.expanduser('~/.qingchat')
-# home = os.getenv('HOME') + '//qingchat'
 address = ''
 config = {}
 
 
 def init():
     """
-    Read config file in ~/.confgi/qingchat/config.yml
+    Read config file in ~/qingchat/config.yml
     If not exsit, add the initconfig about ip and port
 
     :return: the content fo config file in yaml
@@ -59,56 +55,55 @@ def init():
     return initconfig
 
 
-def save_config(content):
+def save_config(content, config_file=home + '/config.yml'):
     """
     Save config into config file
 
     :param content: content of config in yaml
+    :param configfile: config file
     """
-    with open(home + '/config.yml', "w") as f:
+    with open(config_file, "w") as f:
         f.write(yaml.dump(content, default_flow_style=False))
-        f.close()
 
 
-def load_config():
+def load_config(config_file=home + '/config.yml'):
     """
     Load config file from config file in yaml
 
     :return: yaml of config file
     """
-    with open(home + '/config.yml', "r") as f:
+    with open(config_file, "r") as f:
         content = yaml.load(f)
-        f.close()
     return content
 
 
-def config_ip(ip):
+def config_ip(ip, config_file=home + '/config.yml'):
     """
     Set your server ip as ip
 
     :param ip: your server's ip
     """
-    tmpconfig = load_config()
+    tmpconfig = load_config(config_file)
     tmpconfig['ip'] = ip
     print("您的服务器端IP地址被设置为： %s" % ip)
-    save_config(tmpconfig)
+    save_config(tmpconfig, config_file)
     return ip
 
 
-def config_port(port):
+def config_port(port, config_file=home + '/config.yml'):
     """
     Set your server ip as port
 
     :param port: your server's port
     """
-    tmpconfig = load_config()
+    tmpconfig = load_config(config_file)
     tmpconfig['port'] = port
     print("您的服务器端端口被设置为： %d" % port)
-    save_config(tmpconfig)
+    save_config(tmpconfig, config_file)
     return port
 
 
-def config_login():
+def config_login(config_file=home + '/config.yml'):
     """
     Download qrcode.jpg and show them in webbrowser
 
