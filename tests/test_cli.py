@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from qingchat import cli
+from qingchat import cli, group
 import os
 import sys
 import yaml
@@ -62,4 +62,20 @@ def test_config_port(tmpdir):
 
 
 def test_config_login():
+    pass
+
+
+def test_main(monkeypatch):
+    def mock_command():
+        return True
+
+    monkeypatch.setattr('cli.config_ip', mock_command)
+    monkeypatch.setattr('cli.config_port', mock_command)
+    monkeypatch.setattr('cli.config_login', mock_command)
+    monkeypatch.setattr('group.group_list', mock_command)
+    monkeypatch.setattr('group.group_choose', mock_command)
+    monkeypatch.setattr('group.group_send_text', mock_command)
+    monkeypatch.setattr('group.group_send_media', mock_command)
+    monkeypatch.setattr('group.group_send_by_file', mock_command)
+    monkeypatch.setattr('group.group_clean', mock_command)
     pass

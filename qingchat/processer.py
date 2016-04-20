@@ -1,6 +1,8 @@
 import json
 import sender, utils
 
+# TODO: 处理来自openwx的上报信息
+
 EVENT = [
     'new_group',  # 新加入群聊
     'new_friend',  # 新增好友
@@ -14,17 +16,3 @@ EVENT = [
     'user_property_change'  # 帐号属性变化
 ]
 
-
-def judge(data):
-    if data['post_type'] == 'event' and data['event'] in EVENT:
-        return data['event']
-    else:
-        return False
-
-
-def process():
-    data = utils.load_file()
-    event = judge(data)
-    if event == 'new_group_member':
-        print(data['params'][0]['id'])
-        # sender.group_welcome(data['params'][0]['id'])

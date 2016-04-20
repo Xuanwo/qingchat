@@ -1,28 +1,18 @@
-import json
+def get(address):
+    pass
 
 
-def init_file():
-    open('data.txt', 'w+').close()
+def post(address, data):
+    pass
 
 
-def load_file(file='data.txt'):
-    try:
-        with open(file, mode='r') as f:
-            data = json.loads(f.readline())
-            content = f.readlines()
-            save_file(content)
-        return data
-    except json.decoder.JSONDecodeError:
-        print("Data is empty")
-        return None
+def list():
+    pass
 
 
-def save_file(data):
-    with open('data.txt', mode='w') as f:
-        f.writelines(data)
+def choose():
+    pass
 
 
-def append_file(data):
-    with open('data.txt', mode='a') as f:
-        f.write(json.dumps(data))
-        f.write("\n")
+def clean():
+    pass

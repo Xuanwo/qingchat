@@ -3,7 +3,7 @@
 
 from flask import Flask
 from flask import render_template
-from qingchat import group
+import group
 import json
 
 app = Flask(__name__)
@@ -11,12 +11,22 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    r = group.group_list()
+    r = group.list()
     return r['name']
 
 
-@app.route('group')
+@app.route('/group')
 def test():
+    pass
+
+
+@app.route('/friend')
+def x():
+    pass
+
+
+@app.route('/listen')
+def xx():
     pass
 
 

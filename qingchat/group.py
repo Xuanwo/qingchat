@@ -1,11 +1,21 @@
-from cli import address, config, home
+from config import address
+import config
 import cli
 import re
 import requests
+import utils
 import time
 
 
-def group_list():
+def add():
+    pass
+
+
+def delete():
+    pass
+
+
+def list():
     """
     Show all your group
 
@@ -19,11 +29,11 @@ def group_list():
     for i in content:
         config['group'].append(i['displayname'])
         print("群名称： " + i['displayname'])
-    cli.save_config(config)
+    config.save(config)
     return config['group']
 
 
-def group_choose(group_name):
+def choose(group_name):
     """
     Add group_name into chosen_group list
 
@@ -51,7 +61,7 @@ def group_choose(group_name):
     return config['chosen_group']
 
 
-def group_send_text(content):
+def send_text(content):
     """
     Send text message to your chosen_group list
 
@@ -69,7 +79,7 @@ def group_send_text(content):
         print(r.json())
 
 
-def group_send_media(media):
+def send_media(media):
     """
     Send media message to your chosen_group list
 
@@ -87,31 +97,13 @@ def group_send_media(media):
         print(r.json())
 
 
-def group_send_by_file(file, delaytime=0):
-    """
-    Send message to your chosen_group list by file
-
-    :param file: the path to the file you want to use
-    :param delaytime: set the delaytime in two message in seconds, defaults to 0s
-    """
-    with open(file, "r") as f:
-        content = f.readlines()
-        for i in content:
-            time.sleep(float(delaytime))
-            if i[0] == '!':
-                group_send_media(i[1:])
-            else:
-                group_send_text(i)
-    print("文件发送完毕！")
-
-
-def group_clean():
+def clean():
     """
     Clean all your chosen_group list
 
     """
-    tmpconfig = cli.load_config()
+    tmpconfig = config.load()
     if 'chosen_group' in tmpconfig:
         del tmpconfig['chosen_group']
-        cli.save_config(tmpconfig)
+        config.save(tmpconfig)
         print("您选中的群组均已被删除。")
