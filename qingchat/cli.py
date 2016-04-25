@@ -32,7 +32,7 @@ def main():
 
     """
     arguments = docopt(__doc__, version=qingchat.__version__)
-    currnet_config = config.init()
+    config.init()
 
     if arguments['config']:  # config command
         if arguments['ip']:  # config ip

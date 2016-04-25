@@ -38,7 +38,7 @@ def save(content, config_file=home + '/config.yml'):
     Save config into config file
 
     :param content: content of config in yaml
-    :param configfile: config file
+    :param config_file: config file
     """
     with open(config_file, "w") as f:
         f.write(yaml.dump(content, default_flow_style=False))

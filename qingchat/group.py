@@ -1,5 +1,4 @@
 from config import address
-from config import current_config
 import config
 import re
 import utils
@@ -47,6 +46,7 @@ def list():
 
     :return: the json of group info
     """
+    current_config = config.load()
     r = utils.get(address + 'get_group_info')
     print("您的群组为：")
     current_config['group'] = []
@@ -65,6 +65,7 @@ def choose(group_name):
     :param group_name: group_name to be chosen, support re
     :return: list of chonsen groups
     """
+    current_config = config.load()
     if 'chosen_group' not in config or not current_config['chosen_group']:
         current_config['chosen_group'] = []
     if not current_config['group']:
