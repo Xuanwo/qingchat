@@ -1,18 +1,10 @@
+import requests
+
+
+
 def get(address):
-    pass
+    return requests.get(address)
 
 
 def post(address, data):
-    pass
-
-
-def list():
-    pass
-
-
-def choose():
-    pass
-
-
-def clean():
-    pass
+    return requests.post(address,data)

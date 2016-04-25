@@ -81,8 +81,18 @@ def set_port(port, config_file=home + '/config.yml'):
     return port
 
 
-def set_qrocde_port():
-    pass
+def set_qrocde_port(port, config_file=home + '/config.yml'):
+    '''
+    Set your qrcode port
+
+    :param port: qrcode port
+    :param config_file: config file location
+    '''
+    tmpconfig = load(config_file)
+    tmpconfig['qrcode_port'] = port
+    print("您的二维码端口被设置为: %d" % port)
+    save(tmpconfig, config_file)
+    return port
 
 
 def login(address, qrcode_port):

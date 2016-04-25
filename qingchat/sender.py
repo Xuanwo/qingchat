@@ -24,3 +24,4 @@ def group_send_by_file(file, delaytime=0):
             else:
                 group.send_text(i)
     print("文件发送完毕！")
+

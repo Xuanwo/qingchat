@@ -33,6 +33,7 @@ setup(
         'docopt',
         'pyyaml',
         'requests',
+        'flask',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

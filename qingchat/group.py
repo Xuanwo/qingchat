@@ -7,12 +7,40 @@ import utils
 import time
 
 
-def add():
-    pass
+def invite(person_id, group_displayname):
+    """
+    Invite someone into group
+
+    :param person_id: the one you want to invite
+    :param group_id: the group you want to invite into
+    """
+    data = {
+        "friend": person_id,
+        "displayname": group_displayname
+    }
+    r = utils.post(address + 'invite_friend', data).json()
+    if not r['code']:
+        print("已邀请好友 %s 加入群组 %s" % (person_id, group_displayname))
+    else:
+        print("邀请失败!")
 
 
-def delete():
-    pass
+def kick(person_id, group_displayname):
+    """
+    Kick someone from group (you must be the admin of this group)
+
+    :param person_id: the one you want to kick
+    :param group_id: the group you want to kick from
+    """
+    data = {
+        "member": person_id,
+        "displayname": group_displayname
+    }
+    r = utils.post(address + 'kick_group_member', data).json()
+    if not r['code']:
+        print("指定成员 %s 已经从群组 %s 中删除" % (person_id, group_displayname))
+    else:
+        print("删除失败!")
 
 
 def list():
@@ -21,8 +49,7 @@ def list():
 
     :return: the json of group info
     """
-    url = address + 'get_group_info'  # get wechat group info
-    r = requests.get(url)
+    r = utils.get(address + 'get_group_info')
     print("您的群组为：")
     config['group'] = []
     content = r.json()
