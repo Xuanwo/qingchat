@@ -1,44 +1,42 @@
 from config import address
+from config import current_config
 import config
-import cli
 import re
-import requests
 import utils
-import time
 
 
-def invite(person_id, group_displayname):
+def invite(person_id, group_name):
     """
     Invite someone into group
 
     :param person_id: the one you want to invite
-    :param group_id: the group you want to invite into
+    :param group_name: the group you want to invite into
     """
     data = {
         "friend": person_id,
-        "displayname": group_displayname
+        "displayname": group_name
     }
     r = utils.post(address + 'invite_friend', data).json()
     if not r['code']:
-        print("已邀请好友 %s 加入群组 %s" % (person_id, group_displayname))
+        print("已邀请好友 %s 加入群组 %s" % (person_id, group_name))
     else:
         print("邀请失败!")
 
 
-def kick(person_id, group_displayname):
+def kick(person_id, group_name):
     """
     Kick someone from group (you must be the admin of this group)
 
     :param person_id: the one you want to kick
-    :param group_id: the group you want to kick from
+    :param group_name: the group you want to kick from
     """
     data = {
         "member": person_id,
-        "displayname": group_displayname
+        "displayname": group_name
     }
     r = utils.post(address + 'kick_group_member', data).json()
     if not r['code']:
-        print("指定成员 %s 已经从群组 %s 中删除" % (person_id, group_displayname))
+        print("指定成员 %s 已经从群组 %s 中删除" % (person_id, group_name))
     else:
         print("删除失败!")
 
@@ -51,13 +49,13 @@ def list():
     """
     r = utils.get(address + 'get_group_info')
     print("您的群组为：")
-    config['group'] = []
+    current_config['group'] = []
     content = r.json()
     for i in content:
-        config['group'].append(i['displayname'])
+        current_config['group'].append(i['displayname'])
         print("群名称： " + i['displayname'])
     config.save(config)
-    return config['group']
+    return current_config['group']
 
 
 def choose(group_name):
@@ -67,61 +65,58 @@ def choose(group_name):
     :param group_name: group_name to be chosen, support re
     :return: list of chonsen groups
     """
-    if 'chosen_group' not in config or not config['chosen_group']:
-        config['chosen_group'] = []
-    if not config['group']:
+    if 'chosen_group' not in config or not current_config['chosen_group']:
+        current_config['chosen_group'] = []
+    if not current_config['group']:
         print("请先获取群组信息")
 
     for i in group_name:
-        for j in config['group']:
+        for j in current_config['group']:
             if re.match(i, j) \
                     and re.match(i, j).group() != '' \
-                    and j not in config['chosen_group']:
+                    and j not in current_config['chosen_group']:
                 # Sometime re.match will return empty str
-                config['chosen_group'].append(j)
+                current_config['chosen_group'].append(j)
 
-    cli.save_config(config)
+    config.save(current_config)
     print("您已经选择的群组：")
-    for i in config['chosen_group']:
+    for i in current_config['chosen_group']:
         print("群名称： " + i)
 
-    return config['chosen_group']
 
-
-def send_text(content):
+def send_text(group_name, content):
     """
     Send text message to your chosen_group list
 
+    :param group_name: the group you want to send to
     :param content: your text message
     """
     data = {
-        'displayname': '',
-        'content': ''
+        'displayname': group_name,
+        'content': content
     }
-    url = address + 'send_group_message'
-    for i in config['chosen_group']:
-        data['displayname'] = i
-        data['content'] = content
-        r = requests.post(url, data=data)
-        print(r.json())
+    r = utils.post(address + 'send_group_message', data).json()
+    if not r['code']:
+        print("消息已发送到 %s " % (group_name))
+    else:
+        print("消息发送失败!")
 
 
-def send_media(media):
+def send_media(group_name, media):
     """
     Send media message to your chosen_group list
 
     :param media: your media in url or path
     """
     data = {
-        'displayname': '',
-        'media_path': ''
+        'displayname': group_name,
+        'media_path': media
     }
-    url = address + 'send_group_message'
-    for i in config['chosen_group']:
-        data['displayname'] = i
-        data['media_path'] = media
-        r = requests.post(url, data=data)
-        print(r.json())
+    r = utils.post(address + 'send_group_message', data).json()
+    if not r['code']:
+        print("多媒体已发送到 %s " % (group_name))
+    else:
+        print("多媒体发送失败!")
 
 
 def clean():
